@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1045113378786",
+    "project_id": "clawapp-2b213",
+    "storage_bucket": "clawapp-2b213.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045113378786:android:59441b40b22bf1d4f3cbbb",
+        "android_client_info": {
+          "package_name": "com.clawApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArYIW43QB93elimrbauHa12xkf3k6-Rgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045113378786:android:654736013a48fb65f3cbbb",
+        "android_client_info": {
+          "package_name": "com.clawlawyers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArYIW43QB93elimrbauHa12xkf3k6-Rgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045113378786:android:c2446f6b5067aa31f3cbbb",
+        "android_client_info": {
+          "package_name": "com.clawuser"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArYIW43QB93elimrbauHa12xkf3k6-Rgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
