@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigation, DrawerActions } from '@react-navigation/native'
 import add from '../assets/add.png';
 import chatBubble from '../assets/chatBubble.png';
 import Ripple from 'react-native-material-ripple';
-import MenuProfileIcon from '../assets/MenuProfileIcon.png'
-import MenuArrow from '../assets/MenuArrow.png'
+import MenuProfileIcon from '../assets/profile-icon-unselected.png'
+import MenuArrow from '../assets/rightArrow.png'
 import Delete from '../assets/delete.png';
 import GavelIconDark from '../assets/GavelIcon.png';
 import MoneyIconDark from '../assets/MoneyIcon.png';
 import LinearGradient from 'react-native-linear-gradient'
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch,connect} from 'react-redux';
 import {
     DrawerContentScrollView,
   } from '@react-navigation/drawer';
@@ -17,47 +17,53 @@ import { Image,View,Text,Dimensions,  Pressable, FlatList } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { moderateScale } from '../styles/mixins';
 import { changeVariable} from '../actions';
+import { RetreiveAllSessions, setActiveSessionID,setSessionLoader } from '../actions/legalGPT';
   function CustomDrawer(props) {
 
-    const windowHeight = Dimensions.get('window').height;
+    //const windowHeight = Dimensions.get('window').height;
     const navigation = useNavigation();
-    const dispatch = useDispatch()
-    const fname = useSelector(state => state.variables.firstName);
-    const lname = useSelector(state => state.variables.lastName)
     const GPTHistory_ID = useSelector(state => state.variables.GPTHistory_ID);
-    console.log(GPTHistory_ID)
+   //console.log(GPTHistory_ID)
    
 
     const createNewChat = () => {
-     dispatch(changeVariable('active_chatID',0));
+      props.setActiveSessionID('newSession');
      navigation.dispatch(DrawerActions.closeDrawer());
     }
 
     const setActiveChat = (item) => {
 
-      dispatch(changeVariable('active_chatID',item))
+      console.log(item)
+      props.setActiveSessionID(item);
+      setSessionLoader(true)
       navigation.dispatch(DrawerActions.closeDrawer());
 
     }
+
+    useEffect(() => {
+
+      props.RetreiveAllSessions();
+    })
     return (
       <DrawerContentScrollView {...props} 
-        style={{backgroundColor:'#1B202C'}}
+        style={{backgroundColor:'#1B202C',}}
       >
-        <View style={{flex:1,height:windowHeight,flexDirection:'column',justifyContent:'space-between',paddingTop:moderateScale(20)}}>
+        
+        <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',paddingTop:moderateScale(20),marginBottom:0}}>
         <View>
-        {GPTHistory_ID.map(item => {
+        {GPTHistory_ID.length>0? GPTHistory_ID.map(item => {
         return(
-          < Pressable 
-            style={{flexDirection:'row',paddingVertical:moderateScale(12),paddingLeft:moderateScale(12),paddingRight:moderateScale(50),marginHorizontal:moderateScale(16)}}
-            onPress={setActiveChat}
-            disabled
+          < Ripple key={item.id}
+            style={{flexDirection:'row',paddingVertical:moderateScale(12),paddingLeft:moderateScale(12),paddingRight:moderateScale(50),marginHorizontal:moderateScale(16),alignItems:'center'}}
+            onPress={() => setActiveChat(item.id)}
+            rippleColor='white'
           >
-            <Image source={chatBubble}/>
-            <Text style={{marginLeft:moderateScale(12), color:'white',fontSize:16}}>Active chat</Text>
-        </ Pressable>
+            <Image source={chatBubble} style={{height:moderateScale(23),width:moderateScale(23)}}/>
+            <Text style={{marginLeft:moderateScale(12), color:'white',fontSize:16}} numberOfLines={1}>{item.name}</Text>
+        </ Ripple>
         )
 
-        })}
+        }):null}
         {/* < Pressable style={{flexDirection:'row',paddingVertical:moderateScale(12),paddingLeft:moderateScale(12),paddingRight:moderateScale(50),marginHorizontal:moderateScale(16)}}>
             <Image source={chatBubble}/>
             <Text style={{marginLeft:moderateScale(12), color:'white',fontSize:16}}>A good lawyer</Text>
@@ -112,7 +118,7 @@ import { changeVariable} from '../actions';
         </ Ripple>
         </View>
 
-        <View>
+        <View >
         < Ripple 
           style={{flexDirection:'row', borderTopWidth:1,paddingLeft:moderateScale(12),marginHorizontal:moderateScale(16),borderRadius:10, borderColor:'#ffffff20', paddingVertical:moderateScale(17),}}
           rippleColor='red'
@@ -145,7 +151,11 @@ import { changeVariable} from '../actions';
     );
   }
 
-  export default CustomDrawer;
+  export default connect(null,{
+    setActiveSessionID,
+    RetreiveAllSessions,
+    setSessionLoader
+  })(CustomDrawer);
 
   const styles = StyleSheet.create({
 

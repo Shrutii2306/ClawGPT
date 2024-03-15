@@ -28,8 +28,8 @@ const NewsItem = ({news, isOnboarding}) => {
         source={{uri: news.imageUrl}}
       />
       <View style={[{width:'100%'}]}>
-        <Text style={[styles.font_20, styles.font_bold, styles.textBlack]}>{news.title}</Text>
-        <Text style={[styles.font_14, styles.marginB_5, styles.textBlack]}>{news.publishedAt.slice(0, news.publishedAt.indexOf('T'))}, {news.publishedAt.slice(news.publishedAt.indexOf('T')+1, news.publishedAt.indexOf('.'))} hours</Text>
+        <Text style={[styles.font_20, styles.font_bold, styles.textWhite]}>{news.title}</Text>
+        <Text style={[styles.font_14, styles.marginB_5, styles.textWhite]}>{news.publishedAt.slice(0, news.publishedAt.indexOf('T'))}, {news.publishedAt.slice(news.publishedAt.indexOf('T')+1, news.publishedAt.indexOf('.'))} hours</Text>
       </View>
     </Ripple>
  );

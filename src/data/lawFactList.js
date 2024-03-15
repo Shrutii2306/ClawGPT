@@ -6,6 +6,6 @@ export const lawFactList = [
     ," did you know that the Hindu Succession Act, 1956 was amended in 2005 to grant equal inheritance rights to daughters in ancestral property?"
     ," did you know that the Motor Vehicles Act, 1988 regulates licensing, registration, and insurance of vehicles, setting rules for road safety and traffic violations in India?"
     , " did you know that the Insolvency and Bankruptcy Code, 2016 provides a framework for resolving insolvency cases, promoting entrepreneurship and availability of credit?"
-    ,"  did you know that the Forest Rights Act, 2006 recognizes and vests forest rights in forest-dwelling Scheduled Tribes and other traditional forest dwellers, aiming to protect their livelihoods and conserve biodiversity?"
+    ," did you know that the Forest Rights Act, 2006 recognizes and vests forest rights in forest-dwelling Scheduled Tribes and other traditional forest dwellers, aiming to protect their livelihoods and conserve biodiversity?"
     
 ]

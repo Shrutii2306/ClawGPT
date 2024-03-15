@@ -1,14 +1,14 @@
 import { TouchableOpacity, StyleSheet, View, Text, ScrollView,Image, Pressable  } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import NewsItem from '../../../components/NewsItem';
-import data from '../../../data/dummy'
+import appIcon from '../../../assets/ClawLogoWhite.png'
 import styles from '../../../styles';
 import { useNavigation,useIsFocused } from '@react-navigation/native';
-import { moderateScale, verticalScale } from '../../../styles/mixins';
+import { horizontalScale, moderateScale, verticalScale } from '../../../styles/mixins';
 import {BarIndicator} from 'react-native-indicators'
-import GavelIconLight from '../../../assets/GavelIconLight.png';
+import GavelIconLight from '../../../assets/GavelIcon.png';
 import GavelIconDark from '../../../assets/GavelIconDark.png';
-import MoneyIconLight from '../../../assets/MoneyIconLight.png';
+import MoneyIconLight from '../../../assets/MoneyIcon.png';
 import MoneyIconDark from '../../../assets/MoneyIconDark.png';
 import Ripple from 'react-native-material-ripple'
 
@@ -61,24 +61,26 @@ const getNews = async() => {
   },[isFocused,NewsType]);
 
 return (
-  <View style={[styles.alignItemsCenter, styles.alignViewCenter,{backgroundColor:'white',flex:1}]}>
-      <View style={[styles.alignViewCenter, styles.alignItemsCenter]}>
+  <View style={[{backgroundColor:'#1B202C',flex:1}]}>
+      <View 
+       style={[styles.alignViewCenter, styles.alignItemsCenter]}
+      >
         <Image  
-          source={require('../../../assets/app-icon.png')}
-          style={[styles.logoStyle,{marginTop: verticalScale(30)}]} 
+          source={appIcon}
+          style={[{marginTop: verticalScale(30),height:verticalScale(36),width:horizontalScale(114)}]} 
         />
       </View>
-      <View style={[styles.alignViewCenter, styles.alignItemsLeft]}>
-        <Text style={[styles.textBlack, styles.font_700, styles.font_25,]}> Latest News </Text>
+      <View style={[styles.alignViewCenter, styles.alignItemsCenter,{marginTop:18,}]}>
+        <Text style={[styles.textWhite, styles.font_700, styles.font_28,]}> Latest News </Text>
       </View>
-      <View style={{flexDirection:'row',borderColor:'#D9D9D9',justifyContent:'space-between',width:'80%',marginTop:10}}>
+      <View style={{flexDirection:'row',borderColor:'#D9D9D9',justifyContent:'space-between',width:'80%',marginTop:28,marginBottom:20,alignSelf:'center'}}>
            <Ripple 
               style={NewsType==0 ? styles2.activeNewsTab: styles2.inactiveNewsTab} onPress={()=>setNewType(0)}
               rippleColor={NewsType==0 ? 'white' : '#8940ff'}
             >
 
-              <Image source={NewsType == 0? MoneyIconLight:MoneyIconDark} style={{width:25,height:22,marginHorizontal:5}}/>
-             <Text style={NewsType==0 ? {color:'white',fontSize:18}: {color:'black',fontSize:18}}>Financial</Text>
+              <Image source={ MoneyIconLight} style={{width:25,height:22,marginRight:5}}/>
+             <Text style={NewsType==0 ? {color:'white',fontSize:18}: {color:'white',fontSize:18}}>Financial</Text>
 
             </Ripple>
 
@@ -88,12 +90,13 @@ return (
               rippleColor={NewsType==1 ? 'white' : '#8940ff'}
             >
               
-              <Image source={NewsType == 1? GavelIconLight:GavelIconDark} style={{width:25,height:22,marginHorizontal:5}}/>
-              <Text style={NewsType==1 ? {color:'white',fontSize:18}: {color:'black',fontSize:18}}>Legal</Text>
+              <Image source={GavelIconLight} style={{width:25,height:22,marginRight:5}}/>
+              <Text style={NewsType==1 ? {color:'white',fontSize:18}: {color:'white',fontSize:18}}>Legal</Text>
 
             </Ripple>
         </View>
-       
+
+      <View style={{flex:1,justifyContent:'center'}}>
         {newsData.length>0? <ScrollView 
           showsVerticalScrollIndicator={false}
         >
@@ -103,10 +106,13 @@ return (
         <NewsItem key={item._id} news={item} isOnboarding={false}/>
       )})}
       </ScrollView> : 
-      <View><BarIndicator color='#D9D9D9' size={50}/></View>
+        <View style={{marginTop:moderateScale(10)}}>
+          <BarIndicator color='#D9D9D9' size={50}/>
+        </View>
        
       }
-      <View style={{height:moderateScale(30),marginTop:10}}></View>
+      </View>
+      {/* <View style={{height:moderateScale(30),marginTop:10}}></View> */}
   </View>
 )
 }
@@ -117,7 +123,8 @@ const styles2 = StyleSheet.create({
     alignItems:'center',
     backgroundColor:'#8940FF',
      borderColor:'#D9D9D9', 
-     paddingHorizontal:15,
+     paddingRight:15,
+     paddingLeft:10,
      paddingVertical:5,
      flexDirection:'row',
     borderRadius:10
@@ -125,14 +132,16 @@ const styles2 = StyleSheet.create({
 
   inactiveNewsTab :{
     alignItems:'center',
-    
+    borderBottomWidth:1,
     borderRightWidth:1, 
     padding:10,
-    borderColor:'#D9D9D9',
-    paddingHorizontal:15,
+    borderColor:'#ffffff10',
+    paddingRight:15,
+     paddingLeft:10,
     paddingVertical:5,
      flexDirection:'row',
-    borderRadius:10
+    borderRadius:10,
+    elevation:15
   }
 
 })

@@ -11,7 +11,7 @@ const verticalFactor = longDimension / guidelineBaseHeight;
 export const horizontalScale = size => horizontalFactor * size;
 export const verticalScale = size => verticalFactor * size;
 
-export function moderateScale(size, factor = 0.5) {
+export function moderateScale(size, factor = 0) {
   if (size < 0) {
     const horizontalDifference = horizontalScale(size) - size;
     return size + horizontalDifference * factor;

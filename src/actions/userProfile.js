@@ -22,11 +22,11 @@ const getUserProfileHelper = async({dispatch}) =>{
         const response = await fetch("https://claw-backend.onrender.com/api/v1/client/auth/me", requestOptions)
         const responseJSON = await response.json();
 
-        //console.log('responseJson',responseJSON)
+        console.log('getUserProfileHelper responseJson',responseJSON)
         const lawyerData = responseJSON.data;
-        dispatch(changeVariable('firstName',lawyerData.firstName));
-        dispatch(changeVariable('lastName',lawyerData.lastName));
-        dispatch(changeVariable('email',lawyerData.email));
+        // dispatch(changeVariable('firstName',lawyerData.firstName));
+        // dispatch(changeVariable('lastName',lawyerData.lastName));
+        // dispatch(changeVariable('email',lawyerData.email));
         // fetch(lawyerData.profilePicture)
         // .then(response => response.blob())
         // .then(blob => {
@@ -42,11 +42,11 @@ const getUserProfileHelper = async({dispatch}) =>{
         //     console.error('Error fetching image:', error);
         // });
        
-        dispatch(changeVariable('state',lawyerData.state));
-        dispatch(changeVariable('gender',lawyerData.gender));
+        // dispatch(changeVariable('state',lawyerData.state));
+        // dispatch(changeVariable('gender',lawyerData.gender));
         dispatch(changeVariable('phone_no',lawyerData.phoneNumber));
         dispatch(changeVariable('uid',lawyerData._id));
-        dispatch(changeVariable('gender',lawyerData.gender));
+        // dispatch(changeVariable('gender',lawyerData.gender));
 
     }catch(err){
         console.log('error',err);

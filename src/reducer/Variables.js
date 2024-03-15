@@ -2,20 +2,19 @@ import { CHANGEVARIABLE } from '../actions/type';
 
 //store all redux variables here
 const INITIAL_STATE = {
-  activity: false,
+
   firstName:'',
   lastName : '',
-  authenticated: false,
   session_id: '',
   email: '',
   error: false,
   uid: '',
   phone_no: '',
-  role: '',
   jwtToken : '',
-  address : '',
   GPTHistory_ID : [],
-  active_chatID : 0
+  active_chatID : 'newSession',
+  active_chatHistory :[],
+  sessionLoader:false
 };
 const a = (state = INITIAL_STATE, action) => {
   switch (action.type) {

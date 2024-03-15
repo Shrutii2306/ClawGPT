@@ -3,6 +3,8 @@ import React,{useState, useEffect} from 'react'
 import styles from '../../../styles'
 import { horizontalScale, moderateScale, verticalScale } from '../../../styles/mixins'
 import { useNavigation, useIsFocused} from '@react-navigation/native';
+import appIcon from '../../../assets/ClawLogoWhite.png'
+
 const NewsDetail = ({route}) => {
 
     let {news} = route.params;
@@ -55,16 +57,16 @@ const NewsDetail = ({route}) => {
 
     const navigation = useNavigation();
   return (
-    <View style={[styles.alignItemsCenter, styles.alignViewCenter,{backgroundColor:'white',flex:1,justifyContent:'flex-start'}]}>
-      <ScrollView>
+    <View style={[styles.alignItemsCenter, styles.alignViewCenter,{backgroundColor:'#1B202C',flex:1,justifyContent:'flex-start'}]}>
+      <ScrollView style={{paddingHorizontal:moderateScale(15)}}>
        <View style={[styles.alignViewCenter, styles.alignItemsCenter]}>
           <Image  
-            source={require('../../../assets/app-icon.png')}
-            style={[styles.logoStyle,{marginTop: verticalScale(30)}]} 
+            source={appIcon}
+            style={{marginTop: verticalScale(30),height:verticalScale(36),width:horizontalScale(114)}} 
           />
         </View>
-        <View style={[styles.alignViewSplit, {width: '100%',paddingHorizontal:20}]}>
-            <View style={[styles.alignViewCenter, styles.alignItemsCenter]}>
+        <View style={{flexDirection:'row',justifyContent:'space-between',paddingRight:moderateScale(15),marginTop:28}}>
+            <View style={{}}>
 
                 <TouchableOpacity onPress={() => navigation.navigate('NewsScreen',{newsType:newsType})}>
                   <Image  
@@ -75,45 +77,45 @@ const NewsDetail = ({route}) => {
                 
             </View>
         
-            <View style={[styles.alignItemsCenter, styles.alignViewCenter, styles.alignViaRow]}>
+            <View style={{flexDirection:'row'}}>
               <TouchableOpacity>
                 <Image  
                       source={require('../../../assets/share-button.png')}
-                      style={[styles.backButtonIcon, {marginRight: horizontalScale(20)}]} 
+                      style={[ {marginRight: horizontalScale(20),height:moderateScale(28.5),width:moderateScale(25)}]} 
                   />
               </TouchableOpacity>
 
               <TouchableOpacity>
                 <Image  
                   source={require('../../../assets/hamburger-button.png')}
-                  style={[styles.backButtonIcon]} 
+                  style={{height:moderateScale(28),width:moderateScale(7)}} 
                 />
               </TouchableOpacity>
             </View>
         </View>
 
-        <View style={{marginTop:20,paddingHorizontal:20}}>
-          <Text style={[styles.font_20, styles.font_bold, styles.textBlack]}>{news.title}</Text>
-          <Text style={[styles.font_14, styles.marginB_5, styles.textBlack]}>{news.publishedAt.slice(0, news.publishedAt.indexOf('T'))}, {news.publishedAt.slice(news.publishedAt.indexOf('T')+1, news.publishedAt.indexOf('.'))} hours</Text>
+        <View style={{marginTop:20}}>
+          <Text style={[styles.font_20, styles.font_bold, styles.textWhite]}>{news.title}</Text>
+          <Text style={[styles.font_14, styles.marginB_5, styles.textWhite]}>{news.publishedAt.slice(0, news.publishedAt.indexOf('T'))}, {news.publishedAt.slice(news.publishedAt.indexOf('T')+1, news.publishedAt.indexOf('.'))} hours</Text>
 
           <Image
-            style={[styles.newsImage,{width:'auto',height:moderateScale(200)}]}
+            style={[styles.newsImage,{height:moderateScale(200),width:'auto',marginRight:moderateScale(15)}]}
             source={{uri: news.imageUrl}}
             resizeMode="cover"
           />
-          <Text style={{color:'black',marginTop:15,lineHeight:19}}>{news.description}</Text>
+          <Text style={{color:'white',marginTop:15,lineHeight:19}}>{news.description}</Text>
 
           <View style={{height:1,width:moderateScale(400),backgroundColor:'#0f0f0f30',marginVertical:15}}></View>
 
-          <Text style={{fontWeight:'500',color:'black',fontSize:30,marginBottom:10}}>Read more</Text>
+          <Text style={{fontWeight:'500',color:'white',fontSize:30,marginBottom:10}}>Read more</Text>
 
           {newsData.map((item) => {
 
             if(item._id != news._id){
               return(
                 <TouchableOpacity key={item._id} onPress={() => navigation.navigate('NewsDetail',{news:item})}>
-                    <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <Text style={{fontWeight:'bold',color:'black',fontSize:15,width:'70%'}} numberOfLines={3}>{item.title}</Text>
+                    <View style={{flexDirection:'row',}}>
+                    <Text style={{fontWeight:'bold',color:'white',fontSize:15,width:'65%'}} numberOfLines={3}>{item.title}</Text>
                     <Image source={{uri: item.imageUrl}} style={{height:moderateScale(95),width:moderateScale(120),borderRadius:12}}/>
                   </View>
 

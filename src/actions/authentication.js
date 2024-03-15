@@ -3,6 +3,7 @@ import { CHANGEVARIABLE } from './type';
 import { storeData } from './async-storage';
 import { Alert } from 'react-native';
 import { changeVariable } from './variables';
+import { createNewGPTUser } from './legalGPT';
 
 //  const registerUserHelper = async ({ data, navigation, dispatch }) => {
 
@@ -67,7 +68,8 @@ import { changeVariable } from './variables';
             storeData('userId',responseJson.data.jwt);
             dispatch(changeVariable('jwtToken', responseJson.data.jwt))
             dispatch(changeVariable('phone_no',body.phoneNumber))
-              navigation.replace('UserFlow')
+            createNewGPTUser(responseJson.data.jwt);
+            navigation.replace('UserFlow')
             
           }
           
@@ -81,6 +83,8 @@ import { changeVariable } from './variables';
     
 }
 
+
+
 const localSigninHelper = async({data,navigation,dispatch}) =>{
 
   console.log('first')
@@ -89,10 +93,9 @@ const localSigninHelper = async({data,navigation,dispatch}) =>{
 
   if(userId){
 
-    const session_id = Math.floor(Math.random() * 90000) + 10000;
-    console.log(session_id)
     dispatch(changeVariable('jwtToken',userId));
-    dispatch(changeVariable('session_id',session_id));
+    console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
+    createNewGPTUser(userId);
     navigation.replace('UserFlow');
   }else{
     navigation.replace('SignupFlow');

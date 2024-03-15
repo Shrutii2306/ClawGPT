@@ -335,7 +335,7 @@ lawyerOnboardingImage:{
 newsContainer:{
   padding: moderateScale(10),
   borderBottomWidth: moderateScale(1),
-  borderBottomColor: '#fff',
+  borderBottomColor: '#ffffff30',
   alignContent: 'center',
   alignItems: 'center',
   padding: moderateScale(15),
