@@ -1,4 +1,4 @@
-import { View, Image } from 'react-native'
+import { View, Image , StatusBar} from 'react-native'
 import React, { useEffect } from 'react'
 import {useNavigation, useIsFocused} from '@react-navigation/native'
 import {LocalSignIn } from '../../actions/authentication'
@@ -27,7 +27,7 @@ const InitialLandingScreen =(props) => {
     },[isFocused]);
   return (
     <View style={{backgroundColor:'white',flex:1,justifyContent:'center'}}>
-    
+    <StatusBar backgroundColor='#1B202C'/>
       <Image source={require('../../assets/app-icon.png')} style={{alignSelf:'center'}}/>
     </View>
   )

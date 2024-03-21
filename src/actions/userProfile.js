@@ -1,13 +1,14 @@
 import { ToastAndroid } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { changeVariable } from "./variables";
+import { USER_PROFILE_URL } from "./variables";
 const getUserProfileHelper = async({dispatch}) =>{
 
-    // console.log('get user profile')
+
+    dispatch(changeVariable('userDetailLoader',true))
     const userToken = await AsyncStorage.getItem('userId');
    
     const userProfileToken = "Bearer "+userToken;
-   // console.log('vfirst',userProfileToken)
     var myHeaders = new Headers();
     myHeaders.append("Authorization", userProfileToken);
     
@@ -19,35 +20,17 @@ const getUserProfileHelper = async({dispatch}) =>{
 
     try{
         
-        const response = await fetch("https://claw-backend.onrender.com/api/v1/client/auth/me", requestOptions)
+        const response = await fetch( USER_PROFILE_URL, requestOptions)
         const responseJSON = await response.json();
-
-        console.log('getUserProfileHelper responseJson',responseJSON)
-        const lawyerData = responseJSON.data;
-        // dispatch(changeVariable('firstName',lawyerData.firstName));
-        // dispatch(changeVariable('lastName',lawyerData.lastName));
-        // dispatch(changeVariable('email',lawyerData.email));
-        // fetch(lawyerData.profilePicture)
-        // .then(response => response.blob())
-        // .then(blob => {
-        //     // Convert the blob to a data URL
-        //     const reader = new FileReader();
-        //     reader.onload = () => {
-        //     // console.log(reader.result);
-        //     dispatch(changeVariable('photo_url',reader.result));
-        //     };
-        //     reader.readAsDataURL(blob);
-        // })
-        // .catch(error => {
-        //     console.error('Error fetching image:', error);
-        // });
-       
-        // dispatch(changeVariable('state',lawyerData.state));
-        // dispatch(changeVariable('gender',lawyerData.gender));
-        dispatch(changeVariable('phone_no',lawyerData.phoneNumber));
-        dispatch(changeVariable('uid',lawyerData._id));
-        // dispatch(changeVariable('gender',lawyerData.gender));
-
+        const userData = responseJSON.data;
+        dispatch(changeVariable('firstName',userData.firstName));
+        dispatch(changeVariable('lastName',userData.lastName));
+        dispatch(changeVariable('email',userData.email));
+        dispatch(changeVariable('state',userData.state));
+        dispatch(changeVariable('city',userData.city));
+        dispatch(changeVariable('phone_no',userData.phoneNumber));
+        dispatch(changeVariable('uid',userData._id));
+        dispatch(changeVariable('userDetailLoader',false))
     }catch(err){
         console.log('error',err);
     }

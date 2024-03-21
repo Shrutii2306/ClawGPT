@@ -22,9 +22,6 @@
     "@react-navigation/native": "^6.1.12",
     "@react-navigation/native-stack": "^6.9.20",
     "@reduxjs/toolkit": "^2.0.1",
-    "@zegocloud/react-native-callkeep": "^4.3.9",
-    "@zegocloud/zego-uikit-prebuilt-call-rn": "^4.4.2",
-    "@zegocloud/zego-uikit-rn": "^2.6.1",
     "adbkit": "^2.11.1",
     "mime": "^4.0.1",
     "otpless-react-native": "^1.0.8",
@@ -42,7 +39,6 @@
     "react-native-material-ripple": "^0.9.1",
     "react-native-paper": "^5.12.3",
     "react-native-picker-select": "^9.0.0",
-    "react-native-pie-chart": "^3.0.2",
     "react-native-radio-buttons-group": "^3.0.7",
     "react-native-reanimated": "^3.6.2",
     "react-native-safe-area-context": "^4.9.0",
@@ -56,10 +52,7 @@
     "react-redux": "^9.0.4",
     "react-typed": "^2.0.12",
     "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0",
-    "zego-express-engine-reactnative": "^3.2.0",
-    "zego-zim-react-native": "^2.12.1",
-    "zego-zpns-react-native": "^2.5.0-alpha"
+    "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

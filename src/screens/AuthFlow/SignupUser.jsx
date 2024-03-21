@@ -1,12 +1,12 @@
-import { View, Text, Image,TextInput, Pressable, ToastAndroid, StyleSheet } from 'react-native'
+import { View, Text, Image,TextInput, StatusBar, ToastAndroid, StyleSheet } from 'react-native'
 import React, { useState,useEffect, useRef } from 'react'
 import styles from '../../styles'
 import {moderateScale, verticalScale } from '../../styles/mixins'
 import {  validatePhoneNumber} from '../../actions/authentication'
 import { changeVariable } from '../../actions/variables'
 import {BarIndicator} from 'react-native-indicators';
-import { connect } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
+import { connect, useDispatch, useSelector } from 'react-redux'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 import auth from '@react-native-firebase/auth';
 import OTPGraphic from '../../assets/OTP-security.png';
 import LinearGradient from 'react-native-linear-gradient';
@@ -16,8 +16,11 @@ const SignupUser = (props) => {
 
     //console.log(props);
     const [_phoneNumber, _setphoneNumber] = useState('');
+    const loginLoader = useSelector( state => state.variables.loginLoader);
     const [confirm, setConfirm] = useState('');
+    const isFocused = useIsFocused();
     const navigation = useNavigation()   
+    const dispatch = useDispatch();
     const [_otp,_setotp] = useState('');
     const [_OTPvisibility, setOTPvisibility] = useState(true);
     const [ isLoading, setIsLoading] = useState(false);
@@ -39,7 +42,9 @@ const SignupUser = (props) => {
     const [pinTxt6, setPintTxt6] = useState('');
 
     function onAuthStateChanged(user) {
-
+        if(_phoneNumber==''){
+            return 0;
+        }
         console.log('inside onauthchanged')
         if (user) {
 
@@ -53,10 +58,15 @@ const SignupUser = (props) => {
                 verified: true
             }
              props.validatePhoneNumber(data,navigation)
-            navigation.replace('UserFlow')
+            //navigation.replace('UserFlow')
             setIsLoading(false);
         }
       }
+
+    //   useEffect(() => {
+
+    //     setConfirm('')
+    //   },[isFocused])
 
       useEffect (() => {
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -104,7 +114,7 @@ const SignupUser = (props) => {
         }catch(err){
             
             console.log(err)
-            if( (err.message)=='[auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.')
+            if((err.message)=='[auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.')
             ToastAndroid.show("Too many requests, try again later!",ToastAndroid.SHORT);
             else
             ToastAndroid.show("Couldn't complete request, try again later!",ToastAndroid.SHORT);
@@ -120,10 +130,11 @@ const SignupUser = (props) => {
         try{
             
             setIsLoading(true);
+            dispatch(changeVariable('loginLoader',true))
             const res = await confirm.confirm(OTP);
             console.log(res);
            // alert('sign in successful!');
-            navigation.replace('UserFlow')
+           // navigation.replace('UserFlow')
             const data = {
                 phoneNumber: _phoneNumber,
                 verified: true
@@ -151,6 +162,7 @@ const SignupUser = (props) => {
             end={{x: 1, y: 1}}
             style={{flex: 1}}
           >
+            <StatusBar backgroundColor='#1B202C'/>
             <View style={localStyles.container}>            
                 
                 <View style={[styles.alignViewCenter, styles.alignItemsLeft, {alignItems:'center', marginTop: verticalScale(35)}]}>
@@ -203,7 +215,7 @@ const SignupUser = (props) => {
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}
             style={localStyles.container}
-          >
+          ><StatusBar backgroundColor='#1B202C'/>
         <View style={[ {alignItems:'center',paddingTop:moderateScale(24)}]}>
             
             <Image source={OTPGraphic} style={{height:moderateScale(140),width:moderateScale(200)}} />
@@ -349,11 +361,11 @@ const SignupUser = (props) => {
             Resend OTP { _timer?(_timer):null}
     </Text>
     <Ripple 
-        style={[styles.loginButton, styles.alignViewCenter, styles.alignItemsCenter,{alignSelf:'center',marginTop:15}]}
+        style={[styles.loginButton, styles.alignViewCenter, styles.alignItemsCenter,{alignSelf:'center',marginTop:15,overflow:'hidden'}]}
         onPress={handleOTP}
         rippleColor='white'
     >
-        { !isLoading ?
+        { !loginLoader ?
         <Text style={[styles.font_25, styles.textWhite,]}>
             Next
         </Text>:

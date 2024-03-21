@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity,Image,  TextInput, ImageBackground,Pressable } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity,Image,  TextInput, ImageBackground,Pressable, StyleSheet, StatusBar } from 'react-native'
 import React, {useState, useEffect, useRef} from 'react'
 import styles from '../../../styles';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
@@ -10,61 +10,46 @@ import SidebarIcon from '../../../assets/SidebarIcon.png';
 import GPTSendIcon from '../../../assets/GPTSendIcon.png';
 import { getUserProfile } from '../../../actions/userProfile';
 import Robot from '../../../assets/Robot.png';
-import { lawFactList } from '../../../data/lawFactList';
+import { lawFacts } from '../../../data/lawFactList';
 import LinearGradient from 'react-native-linear-gradient'
 import { DotIndicator, MaterialIndicator} from 'react-native-indicators';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Typewriter from "../../../components/TypeWriter";
 import { createNewSession, RetreiveMessages,setSessionLoader } from '../../../actions/legalGPT';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { changeVariable, NEW_MESSAGE_URL } from '../../../actions';
 //---------------------------for LEGAL GPT APP----------------------------------------
-
-// const Typewriter = ({ text, delay }) => {
-//   const [currentText, setCurrentText] = useState('');
-//   const [currentIndex, setCurrentIndex] = useState(0);
-
-//   // Typing logic goes here
-//   useEffect(() => {
-//     if (currentIndex < text.length) {
-//       const timeout = setTimeout(() => {
-//         setCurrentText(prevText => prevText + text[currentIndex]);
-//         setCurrentIndex(prevIndex => prevIndex + 1);
-//       }, delay);
-  
-//       return () => clearTimeout(timeout);
-//     }
-//   }, [currentIndex, delay, text]);
-  
-//   return <Text>{currentText}</Text>;
-// };
 
 
 const LegalGPTScreen = (props) => {
   
   const navigation = useNavigation();
+  const [lawFactList, setLawFactList] = useState(lawFacts);
   const [query, setQuery] = useState('');
   const [isWaiting, setWaiting] = useState(false);
   const active_chatID = useSelector( state => state.variables.active_chatID);
   const scrollViewRef = useRef(null);
   const isFocused = useIsFocused();
+  const dispatch = useDispatch()
+  const userDetailLoader = useSelector( state => state.variables.userDetailLoader);
   const phone_no = useSelector( state => state.variables.phone_no);
   const GPTChatHistory = useSelector( state => state.variables.active_chatHistory);
-  const sessionLoader = useSelector( state => state.variables.sessionLoader);
+  const botLoader = useSelector( state => state.variables.botLoader);
   const copyToClipboard = (content) => {
     Clipboard.setString(content);
   };
-
+console.log(userDetailLoader);
   const sendMessageRequest = async() => {
 
-    setWaiting(true);
+    dispatch(changeVariable('botLoader',true));
    
     if(active_chatID=='newSession'){
         props.createNewSession(query);
-        setTimeout(()=>{
-          setWaiting(false);
+        // setTimeout(()=>{
+        //   setWaiting(false);
           setQuery('');
          // props.RetreiveMessages(active_chatID);
-        },20000);
+        // },20000);
         
         return;
     }
@@ -86,12 +71,13 @@ const LegalGPTScreen = (props) => {
 
     try{
         
-        const response = await fetch("https://claw-backend.onrender.com/api/v1/gpt/session/prompt",requestOptions)
+        const response = await fetch(NEW_MESSAGE_URL,requestOptions)
         setQuery('')
         const responseJSON = await response.json();
         console.log(responseJSON)
         props.RetreiveMessages(active_chatID)
-        setWaiting(false)
+        // setWaiting(false)
+        dispatch(changeVariable('botLoader',false));
     }catch(err){
         setQuery('')
         console.log('appendNewMessageHelper error',err);
@@ -101,6 +87,8 @@ const LegalGPTScreen = (props) => {
 
   
   useEffect(() => {
+
+    if(phone_no != '')
     props.getUserProfile()
   },[phone_no])
 
@@ -110,11 +98,18 @@ const LegalGPTScreen = (props) => {
 
   return (
     <View style={[{backgroundColor:'#1B202C',flex:1}]}>
+      <StatusBar backgroundColor='#1B202C' />
+
+      {userDetailLoader ? <View style={{flex:1,position:'absolute',zIndex:3,height:'100%',width:'100%',backgroundColor:'#00000040',alignItems:'center',justifyContent:'center'}}>
+        <View style={{height:moderateScale(50),marginBottom:moderateScale(10)}}>
+          <MaterialIndicator color='white'/>
+        </View>
+        <Text style={{color:'white',fontSize:18}}>Please wait...</Text>
+      </View> : null}
+
       <ImageBackground source={AppIcon} resizeMode="cover" style={{
-        flex: 1,
-        justifyContent: 'center',paddingHorizontal:15,paddingTop:20,paddingBottom:moderateScale(10)
-      }}>
-        
+        flex: 1, justifyContent: 'center',paddingHorizontal:15,paddingTop:20,paddingBottom:moderateScale(10) }}>
+    
     <View style={[styles.alignViaRow, styles.alignItemsCenter,styles.alignViewCenter, {width: '100%',justifyContent:'space-between',},]}>
       <View></View>
 
@@ -144,7 +139,7 @@ const LegalGPTScreen = (props) => {
           >
             <View style={{marginBottom:10,}}>
            
-          {sessionLoader? <View><MaterialIndicator color='white'/></View>: <View></View>}
+         {/* // {sessionLoader? <View><MaterialIndicator color='white'/></View>: <View></View>} */}
 
             {GPTChatHistory.length>0 ?
               GPTChatHistory.map(item => {
@@ -199,7 +194,7 @@ const LegalGPTScreen = (props) => {
               
         
            
-            {isWaiting ?  <View style={{alignSelf:'flex-start',flexDirection:'row',marginVertical:moderateScale(5),width:'30%'}}>
+            {botLoader ?  <View style={{alignSelf:'flex-start',flexDirection:'row',marginVertical:moderateScale(5),width:'30%'}}>
                             <View style={{backgroundColor:isWaiting?'#8940ff80':'#8940ff',height:moderateScale(50),width:moderateScale(50),alignItems:'center',justifyContent:'center',borderRadius:25,marginRight:6,marginTop:9}} >
                               <Image source={Robot}/>
                             </View>
@@ -210,7 +205,7 @@ const LegalGPTScreen = (props) => {
         </ScrollView>
 
         <View>
-          {isWaiting ? 
+          {botLoader ? 
             <View style={{zIndex:2,flexDirection:'row'}}>
               <FastImage source={require('../../../assets/botAnimation.gif')} style={{height:80,width:80,bottom:moderateScale(-15),position:'absolute',left:moderateScale(-15)}}/> 
               <View style={{flexDirection:'row',alignItems:'flex-end',bottom:moderateScale(40),marginLeft:moderateScale(40)}}>
@@ -220,7 +215,7 @@ const LegalGPTScreen = (props) => {
                   <View style={{borderWidth:1,borderColor:'#8940ff95',marginRight:moderateScale(50),paddingHorizontal:moderateScale(20),paddingVertical:moderateScale(10),borderRadius:moderateScale(20),backgroundColor:'white'}}>
 
                   <Text style={{color:'black',fontSize:moderateScale(18)}}>
-                  <Typewriter text={'While we gather your information,'+lawFactList[Math.floor(Math.random() * 10)]} delay={0} infinite /></Text>
+                  <Typewriter text={Math.floor(Math.random() * 10)} delay={1} /></Text>
                 </View>
               </View>
               </View>:null}
@@ -236,7 +231,7 @@ const LegalGPTScreen = (props) => {
             <TouchableOpacity 
               style={{backgroundColor:'#8940FF',width:'11%',justifyContent:'center',alignItems:'center',borderRadius:10,margin:moderateScale(5)}}
               onPress={sendMessageRequest}
-              disabled = { query.length>0 && isWaiting==false ? false : true}
+              disabled = { query.length>0 && botLoader==false ? false : true}
             >
               {isWaiting? <MaterialIndicator size={18} color='white' />:<Image source={GPTSendIcon} style={{width:moderateScale(15),height:moderateScale(20)}}/>}
             </TouchableOpacity>
@@ -246,6 +241,10 @@ const LegalGPTScreen = (props) => {
        </View>
   )
 }
+
+const localStyles = StyleSheet.create({
+
+})
 
 export default connect(null,{
   getUserProfile,

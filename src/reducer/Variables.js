@@ -14,7 +14,10 @@ const INITIAL_STATE = {
   GPTHistory_ID : [],
   active_chatID : 'newSession',
   active_chatHistory :[],
-  sessionLoader:false
+  sessionLoader:false,
+  loginLoader : false,
+  userDetailLoader : false,
+  botLoader : false
 };
 const a = (state = INITIAL_STATE, action) => {
   switch (action.type) {

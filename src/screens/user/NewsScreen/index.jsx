@@ -11,6 +11,7 @@ import GavelIconDark from '../../../assets/GavelIconDark.png';
 import MoneyIconLight from '../../../assets/MoneyIcon.png';
 import MoneyIconDark from '../../../assets/MoneyIconDark.png';
 import Ripple from 'react-native-material-ripple'
+import { NEWS_URL } from '../../../actions';
 
 const NewsScreen = ({route}) => {
   const {newsType} = route.params;
@@ -35,7 +36,7 @@ const getNews = async() => {
     redirect: 'follow'
   };
 
-  const res = await fetch("https://claw-backend.onrender.com/api/v1/news", requestOptions);
+  const res = await fetch( NEWS_URL, requestOptions);
 
   const response = await res.json();
   const response2 = response.data;
@@ -127,7 +128,8 @@ const styles2 = StyleSheet.create({
      paddingLeft:10,
      paddingVertical:5,
      flexDirection:'row',
-    borderRadius:10
+    borderRadius:10,
+    overflow:'hidden'
     },
 
   inactiveNewsTab :{
